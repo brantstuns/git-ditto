@@ -20,8 +20,6 @@ cat ../resources/logo.txt
 while true; do
   read -p "$(echo -e "${On_Green}what remote repository do you want to keep in sync with your pushes?${no_color} ")" reposervice
 
-  echo $reposervice
-
   case $reposervice in
 
       "" )
@@ -29,7 +27,9 @@ while true; do
         ;;
 
       * )
-        echo 'very cool'
+        currentremote="$(git config --get remote.origin.url)"
+        git remote set-url --add --push origin $currentremote
+        git remote set-url --add --push origin $reposervice
         loader
         break
         ;;
