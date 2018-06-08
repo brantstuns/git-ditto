@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+# so the bin directory will be the root folder ∕
+cd $(dirname $0)
+
+# so that I can easily color the output text 🎨
+source ../resources/colors
+
+# credit where credit is due 🙌 https://stackoverflow.com/a/39898465
+progress-bar()
+{
+  local duration=${1}
+
+
+    already_done() { for ((done=0; done<$elapsed; done++)); do printf " 👻 "; done }
+    remaining() { for ((remain=$elapsed; remain<$duration; remain++)); do printf " "; done }
+    percentage() { printf " | %s%%" $(( (($elapsed)*100)/($duration)*100/100 )); }
+    clean_line() { printf "\r"; }
+
+  for (( elapsed=1; elapsed<=$duration; elapsed++ )); do
+      already_done; remaining; percentage
+      sleep .2
+      clean_line
+  done
+  clean_line
+  echo -e "\n\n"
+  echo ' ✨ 🥂 🥂 🥂 ✨ '
+  echo -e "${On_Green}Now whenever you run git push it will push the changes to:${no_color} ${UYellow}$currentremote${no_color} ${On_Green}AND${no_color} ${UYellow}$newremote${no_color}!"
+  echo ' ✨ 🥂 🥂 🥂 ✨ '
+}
+
+addRemoteGitRepos ()
+{
+  git remote set-url --add --push origin $currentremote
+  git remote set-url --add --push origin $newremote
+  progress-bar 5
+}
+
+if [ "$1" != "" ]; then
+  currentremote="$(git config --get remote.origin.url)"
+  newremote=$1
+  addRemoteGitRepos
+else
+  cat ../resources/logo.txt
+  while true; do
+    read -p "$(echo -e "${On_Green}what remote repository do you want to keep in sync with your pushes?${no_color} ${UCyan}(press return for an example)${no_color} ")" reposervice
+    case $reposervice in
+
+      "" )
+        echo -e "\n\n${Red}☟${no_color}\n\n${BYellow}enter the remote origin like: ${UWhite}git@gitlab.com:username/coolrepo.git${no_color}\n\n${Red}☝${no_color}\n\n"
+        ;;
+
+      "gitlab" )
+        currentremote="$(git config --get remote.origin.url)"
+        newremote=${currentremote/(?<=\@)(.*?)(?=\.)/gitlab}
+        echo newremote
+        addRemoteGitRepos
+        break
+      ;;
+
+      * )
+        currentremote="$(git config --get remote.origin.url)"
+        newremote=$reposervice
+        addRemoteGitRepos
+        break
+        ;;
+
+    esac
+  done
+fi
