@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # so the bin directory will be the root folder ∕
-cd $(dirname $0)
+cd "$(dirname "$(realpath "$0")")"
 
 # so that I can easily color the output text 🎨
 source ../resources/colors
@@ -9,8 +9,8 @@ source ../resources/colors
 # credit where credit is due 🙌 https://stackoverflow.com/a/39898465
 progress-bar()
 {
+  echo -e "\n"
   local duration=${1}
-
 
     already_done() { for ((done=0; done<$elapsed; done++)); do printf " 👻 "; done }
     remaining() { for ((remain=$elapsed; remain<$duration; remain++)); do printf " "; done }
@@ -24,9 +24,9 @@ progress-bar()
   done
   clean_line
   echo -e "\n\n"
-  echo ' ✨ 🥂 🥂 🥂 ✨ '
-  echo -e "${On_Green}Now whenever you run git push it will push the changes to:${no_color} ${UYellow}$currentremote${no_color} ${On_Green}AND${no_color} ${UYellow}$newremote${no_color}!"
-  echo ' ✨ 🥂 🥂 🥂 ✨ '
+  echo -e " ✨ 🥂 🥂 🥂 ✨ \n"
+  echo -e "${UGreen}Now whenever you run git push it will push the changes to:${no_color}\n ${UYellow}$currentremote${no_color} ${UGreen}AND${no_color} ${UYellow}$newremote${no_color}!\n"
+  echo -e " ✨ 🥂 🥂 🥂 ✨ "
 }
 
 addRemoteGitRepos ()
@@ -43,7 +43,7 @@ if [ "$1" != "" ]; then
 else
   cat ../resources/logo.txt
   while true; do
-    read -p "$(echo -e "${On_Green}what remote repository do you want to keep in sync with your pushes?${no_color} ${UCyan}(press return for an example)${no_color} ")" reposervice
+    read -p "$(echo -e "${On_Green}what remote repository do you want to keep in sync with your pushes?${no_color} ")" reposervice
     case $reposervice in
 
       "" )
