@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="https://media.giphy.com/media/pMFmBkBTsDMOY/giphy.gif"/>
-  <img src="https://media.giphy.com/media/7OWssx6Nm84k0OWkBR/giphy.gif"/>
-  <br>
-</p>
+![demo](https://thumbs.gfycat.com/AliveImpartialCaudata-size_restricted.gif)
 
 ## What is it?
 git-ditto is just a simple tool to set up two remote origins in the `.git/config` file of your
