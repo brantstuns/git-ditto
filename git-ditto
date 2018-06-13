@@ -4,7 +4,7 @@
 cd "$(dirname "$(realpath "$0")")"
 
 # so that I can easily color the output text 🎨
-source ../resources/colors
+source ./colors
 
 # credit where credit is due 🙌 https://stackoverflow.com/a/39898465
 progress-bar()
@@ -41,7 +41,7 @@ if [ "$1" != "" ]; then
   newremote=$1
   addRemoteGitRepos
 else
-  cat ../resources/logo.txt
+  cat ./logo.txt
   while true; do
     read -p "$(echo -e "${On_Green}what remote repository do you want to keep in sync with your pushes?${no_color} ")" reposervice
     case $reposervice in
